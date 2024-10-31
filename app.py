@@ -60,9 +60,6 @@ hide_default_format = """
             [data-testid="stSidebarNavItems"] {
                 font-size: 18px;
             }
-            [data-testid="stSidebarNavLink"] {
-                color: #FFFFFF;
-            }
         </style>
        """
 
