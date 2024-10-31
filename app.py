@@ -58,8 +58,11 @@ hide_default_format = """
                 visibility: hidden;
             }
             [data-testid="stSidebarNavItems"] {
-                color: #000000;
-                }
+                font-size: 18px;
+            }
+            [data-testid="stSidebarNavLink"] {
+                color: #FFFFFF;
+            }
         </style>
        """
 

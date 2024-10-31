@@ -68,10 +68,10 @@ st.markdown('''
 col1, col2, col3 = st.columns(3)
 sf_select = col1.slider(
     "Home square footage",
-    400,
+    0,
     6000,
     (1000, 2500),
-    step=100
+    step=500
 )
 
 bedroom_select = col2.slider(
@@ -90,13 +90,14 @@ bathroom_select = col3.slider(
 
 map_variable = st.radio(
     label='Select map aggregation',
-    options=['Total sales', 'Median price', 'Median home size'],
+    options=['Total sales', 'Median price/SF', 'Median home size'],
     index=0,
+    horizontal=True
 )
 
 map_variable_switch = {
     'Total sales': 'total_sales',
-    'Median price': 'median_price',
+    'Median price/SF': 'median_priceSF',
     'Median home size': 'median_SF'
 }
 
@@ -134,12 +135,39 @@ merged_gdf = gdf.merge(
     right_on='BG_ID'
 ).set_index('GEOID')
 
-# st.dataframe(sales_agg, use_container_width=True)
-st.write(merged_gdf)
+# define the main mapping figure
+fig = px.choropleth_mapbox(
+    merged_gdf,
+    geojson=merged_gdf.geometry,
+    locations=merged_gdf.index,
+    color=map_variable_switch[map_variable],
+    color_continuous_scale='Blues',
+    center={"lat": 34.54, "lon": -83.50661343131297},
+    zoom=8.5,
+    height=480
+)
+
+fig.update_layout(
+    margin=dict(l=10, r=10, t=0, b=1),
+    mapbox_style="streets",
+    mapbox_accesstoken='pk.eyJ1Ijoid3dyaWdodDIxIiwiYSI6ImNsNW1qeDRpMDBjMHozY2tjdmdlb2RxcngifQ.od9AXX3w_r6td8tM96W_gA'
+)
 
 
 # remove modebar
 config = {'displayModeBar': False}
+
+# draw map
+col1, col2 = st.columns([5, 1])
+col1.plotly_chart(
+    fig,
+    config=config,
+    theme='streamlit',
+    use_container_width=True
+)
+
+# notes
+st.write('Trailing 24 months for homes built since 2020. Source: Parcl Labs API.')
 
 
 # the custom CSS lives here:
@@ -155,6 +183,9 @@ hide_default_format = """
             [class="stAppDeployButton"] {
                 display: none;
             } 
+            [class="stPlotlyChart"] {
+                padding-top: 0px;
+            }
             div.stActionButton{visibility: hidden;}
         </style>
        """
