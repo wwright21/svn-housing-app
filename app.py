@@ -57,6 +57,9 @@ hide_default_format = """
             .stActionButton {
                 visibility: hidden;
             }
+            [data-testid="stSidebarNavItems"] {
+                color: #000000;
+                }
         </style>
        """
 
