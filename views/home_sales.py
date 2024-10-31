@@ -2,12 +2,10 @@ import streamlit as st
 import geopandas as gpd
 import pandas as pd
 import plotly.express as px
-from dotenv import load_dotenv
-import os
 
 # set page configurations
 st.set_page_config(
-    page_title="Housing Market",
+    page_title="Home Sales",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"  # 'collapsed' or 'expanded'
